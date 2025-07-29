@@ -5,9 +5,9 @@ function Home() {
   const [message, setMessage] = useState('')
 
   useEffect(() => {
-    fetch('/')
+    fetch('/questions/all')
       .then(response => response.json())
-      .then(data => setMessage(data.message))
+      .then(data => setMessage(JSON.stringify(data)))
       .catch(error => console.error('Error fetching message:', error));
   }, []);
 
