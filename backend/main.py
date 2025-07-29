@@ -23,9 +23,7 @@ def create_db_and_tables():
 
 app = FastAPI()
 
-origins = [
-    "http://localhost:5173",  # React development server
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
