@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from sqlmodel import SQLModel, create_engine
 import os
 from dotenv import load_dotenv
-from models.models import Question, Answer # Import models
+from models.models import Question, Answer, Session, Vote # Import models
 from routes import questions # Import routes
 
 
