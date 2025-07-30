@@ -1,10 +1,13 @@
-# IceBreaker Multimedia
+# IceBreaker Multimedia - MVP
 
-IceBreaker Multimedia is a full-stack web application designed to facilitate interactive question-and-answer sessions, ideal for ice-breaking activities, quizzes, or interactive presentations. It features a FastAPI backend for managing questions and answers, and a React frontend for a dynamic user interface.
+IceBreaker Multimedia is an MVP (Minimum Viable Product) of a full-stack web application designed to facilitate interactive question-and-answer sessions, ideal for ice-breaking activities or simple quizzes. It features a FastAPI backend for managing game sessions, questions, answers, and votes, and a React frontend for a dynamic user interface.
 
 ## Features
 
-- **Dynamic Question Management**: Add, retrieve, update, and delete questions and their associated answers.
+- **Game Session Management**: Create unique game sessions that participants can join.
+- **Anonymous Participation**: Participants can join and interact within sessions without needing to create user accounts.
+- **Dynamic Question & Answer Flow**: Present questions and allow participants to submit answers.
+- **Voting System**: Enable participants to vote on submitted answers.
 - **Interactive Frontend**: A responsive and intuitive user interface built with React.
 - **RESTful API**: Clean and well-documented API endpoints for seamless communication between frontend and backend.
 - **Database Integration**: Uses SQLModel for ORM with a SQLite database (configurable).
@@ -25,6 +28,20 @@ IceBreaker Multimedia is a full-stack web application designed to facilitate int
 - **Vite**: A fast build tool that provides a lightning-fast development experience.
 - **TypeScript**: A typed superset of JavaScript that compiles to plain JavaScript.
 - **CSS**: For styling the application.
+
+## Recent Adjustments & MVP Database Schema
+
+To support the core MVP functionality, the following database tables and fields have been added/modified:
+
+-   **`Session` Table**: Manages unique game sessions.
+    -   `id`: Primary key.
+    -   `code`: Unique session code for participants to join.
+-   **`Vote` Table**: Records votes cast by participants on answers within a session.
+    -   `id`: Primary key.
+    -   `session_id`: Foreign key linking to the `Session` table.
+    -   `question_id`: Foreign key linking to the `Question` table.
+    -   `answer_id`: Foreign key linking to the `Answer` table.
+    -   `participant_id`: A string field to store a unique identifier for anonymous participants (e.g., a UUID generated on the client-side). This allows tracking individual votes without requiring user accounts.
 
 ## Setup Instructions for Developers
 
