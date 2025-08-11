@@ -11,6 +11,7 @@ def get_votes_by_session_and_question(
 ) -> List[Vote]:
     """
     Busca todos os votos de uma determinada sessão e questão
+    Retorna ordenados por data crescente (mais antiga para mais nova)
     """
     try:
         engine = get_engine()
@@ -18,7 +19,7 @@ def get_votes_by_session_and_question(
             statement = select(Vote).where(
                 Vote.session_id == session_id,
                 Vote.question_id == question_id
-            ).order_by(Vote.date_)
+            ).order_by(Vote.date_.asc())
             votes = session.exec(statement).all()
             return votes
     except Exception as e:
@@ -33,6 +34,7 @@ def get_vote_count_by_answer(
 ) -> dict:
     """
     Retorna a contagem de votos por resposta para uma sessão e questão específicas
+    Os votos são ordenados por data crescente (mais antiga para mais nova)
     """
     try:
         engine = get_engine()
@@ -40,7 +42,7 @@ def get_vote_count_by_answer(
             statement = select(Vote).where(
                 Vote.session_id == session_id,
                 Vote.question_id == question_id
-            ).order_by(Vote.date_)
+            ).order_by(Vote.date_.asc())
             votes = session.exec(statement).all()
             
             # Conta votos por answer_id
@@ -93,13 +95,14 @@ def get_all_votes_by_session_grouped_by_question(
 ) -> dict:
     """
     Retorna todos os votos de uma sessão, agrupados por questão e ordenados por data
+    Os votos são ordenados por data crescente (mais antiga para mais nova)
     """
     try:
         engine = get_engine()
         with Session(engine) as session:
             statement = select(Vote).where(
                 Vote.session_id == session_id
-            ).order_by(Vote.date_)
+            ).order_by(Vote.date_.asc())
             
             votes = session.exec(statement).all()
             
