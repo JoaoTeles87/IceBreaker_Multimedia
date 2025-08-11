@@ -1,5 +1,6 @@
 from sqlmodel import SQLModel, Field
 from typing import Optional
+from datetime import datetime
 
 class Question(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -25,3 +26,4 @@ class Vote(SQLModel, table=True):
     question_id: int = Field(foreign_key="question.id")
     answer_id: int = Field(foreign_key="answer.id")
     participant_id: str # New field for anonymous participant tracking
+    date_: datetime = Field(default_factory=datetime.utcnow, description="Data de criação do voto")

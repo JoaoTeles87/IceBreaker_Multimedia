@@ -1,6 +1,10 @@
+import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from dotenv import load_dotenv
+from sqlalchemy import create_engine
+from sqlmodel import SQLModel
 from models.database import create_db_and_tables
 from models.models import Question, Answer, Session, Vote # Import models
 from routes import questions, votes # Import routes
@@ -14,10 +18,6 @@ print(f"Frontend dist path: {frontend_dist_path}")
 load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
-engine = create_engine(DATABASE_URL, echo=True)
-
-def create_db_and_tables():
-    SQLModel.metadata.create_all(engine)
 
 app = FastAPI()
 
@@ -36,6 +36,6 @@ def on_startup():
     create_db_and_tables()
 
 app.include_router(questions.router, prefix="/questions", tags=["questions"])
-app.include_router(votes.router, prefix="/votes", tags=["votes"])
+app.include_router(votes.router, tags=["votes"])
 
 app.mount("/", StaticFiles(directory=frontend_dist_path, html=True), name="frontend")

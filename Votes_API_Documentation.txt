@@ -1,0 +1,185 @@
+ICEBREAKER API - DOCUMENTAÇÃO TÉCNICA
+=====================================
+
+MODELO: VOTES (VOTOS)
+======================
+
+VISÃO GERAL
+-----------
+O modelo Votes gerencia o sistema de votação interativo da aplicação IceBreaker.
+Permite que participantes votem em respostas para questões específicas durante sessões.
+
+BASE URL: http://localhost:8000
+
+ENDPOINTS DISPONÍVEIS
+======================
+
+1. CRIAR NOVO VOTO
+   Método: POST
+   Endpoint: /votes
+   Descrição: Cria um novo voto para uma questão específica em uma sessão
+   
+   Parâmetros (Query):
+   - session_id (int, obrigatório): ID da sessão
+   - question_id (int, obrigatório): ID da questão  
+   - answer_id (int, obrigatório): ID da resposta selecionada
+   - participant_id (string, obrigatório): ID do participante
+   
+   Exemplo de uso:
+   curl -X POST "http://localhost:8000/votes?session_id=1&question_id=1&answer_id=2&participant_id=user123"
+   
+   Resposta de sucesso (200):
+   {
+     "id": 1,
+     "session_id": 1,
+     "question_id": 1,
+     "answer_id": 2,
+     "participant_id": "user123",
+     "date_": "2025-08-11T21:36:21.184900"
+   }
+
+2. BUSCAR VOTOS POR SESSÃO E QUESTÃO
+   Método: GET
+   Endpoint: /votes
+   Descrição: Retorna todos os votos de uma sessão e questão específicas, ordenados por data
+   
+   Parâmetros (Query):
+   - session_id (int, obrigatório): ID da sessão
+   - question_id (int, obrigatório): ID da questão
+   
+   Exemplo de uso:
+   curl "http://localhost:8000/votes?session_id=1&question_id=1"
+   
+   Resposta de sucesso (200):
+   [
+     {
+       "id": 1,
+       "session_id": 1,
+       "question_id": 1,
+       "answer_id": 2,
+       "participant_id": "user123",
+       "date_": "2025-08-11T21:36:21.184900"
+     }
+   ]
+
+3. BUSCAR TODOS OS VOTOS DE UMA SESSÃO
+   Método: GET
+   Endpoint: /votes/session/{session_id}
+   Descrição: Retorna todos os votos de uma sessão, agrupados por questão e ordenados por data
+   
+   Parâmetros (Path):
+   - session_id (int, obrigatório): ID da sessão
+   
+   Exemplo de uso:
+   curl "http://localhost:8000/votes/session/1"
+   
+   Resposta de sucesso (200):
+   {
+     "1": [
+       {
+         "id": 1,
+         "session_id": 1,
+         "question_id": 1,
+         "answer_id": 2,
+         "participant_id": "user123",
+         "date_": "2025-08-11T21:36:21.184900"
+       }
+     ],
+     "2": [
+       {
+         "id": 2,
+         "session_id": 1,
+         "question_id": 2,
+         "answer_id": 1,
+         "participant_id": "user456",
+         "date_": "2025-08-11T21:37:15.123456"
+       }
+     ]
+   }
+
+4. CONTAGEM DE VOTOS POR RESPOSTA
+   Método: GET
+   Endpoint: /votes/count
+   Descrição: Retorna a contagem de votos por resposta para uma sessão e questão específicas
+   
+   Parâmetros (Query):
+   - session_id (int, obrigatório): ID da sessão
+   - question_id (int, obrigatório): ID da questão
+   
+   Exemplo de uso:
+   curl "http://localhost:8000/votes/count?session_id=1&question_id=1"
+   
+   Resposta de sucesso (200):
+   {
+     "1": 5,
+     "2": 3,
+     "3": 2
+   }
+
+ESTRUTURA DO MODELO VOTE
+=========================
+Campo: id
+Tipo: int (opcional)
+Descrição: Chave primária auto-incrementada
+
+Campo: session_id  
+Tipo: int (obrigatório)
+Descrição: Referência para a tabela sessions (foreign key)
+
+Campo: question_id
+Tipo: int (obrigatório)  
+Descrição: Referência para a tabela question (foreign key)
+
+Campo: answer_id
+Tipo: int (obrigatório)
+Descrição: Referência para a tabela answer (foreign key)
+
+Campo: participant_id
+Tipo: string (obrigatório)
+Descrição: Identificador único do participante
+
+Campo: date_
+Tipo: datetime (obrigatório)
+Descrição: Data e hora de criação do voto (UTC)
+Valor padrão: datetime.utcnow()
+
+CÓDIGOS DE STATUS HTTP
+=======================
+200 OK: Requisição bem-sucedida
+404 Not Found: Recurso não encontrado  
+500 Internal Server Error: Erro interno do servidor
+
+TRATAMENTO DE ERROS
+===================
+Todos os erros retornam no formato JSON:
+{
+  "detail": "Descrição detalhada do erro"
+}
+
+EXEMPLOS DE ERRO:
+- "Erro ao criar voto: [descrição do erro]"
+- "Erro ao buscar votos: [descrição do erro]"
+- "Erro ao contar votos: [descrição do erro]"
+
+CARACTERÍSTICAS TÉCNICAS
+=========================
+- Todas as datas são armazenadas em UTC
+- Os votos são automaticamente ordenados por data de criação
+- O agrupamento por questão é feito em memória para melhor performance
+- Validação automática de tipos de dados
+- Criação automática de timestamp na criação do voto
+
+FLUXO DE USO TÍPICO
+====================
+1. Criar voto: POST /votes com parâmetros obrigatórios
+2. Verificar votos: GET /votes para uma questão específica
+3. Ver contagem: GET /votes/count para estatísticas
+4. Análise completa: GET /votes/session/{id} para visão geral da sessão
+
+NOTAS IMPORTANTES
+=================
+- Todos os parâmetros são obrigatórios
+- O participant_id deve ser único por sessão
+- As datas são automaticamente geradas no momento da criação
+- O agrupamento por questão facilita a análise de resultados
+- A ordenação por data permite acompanhar a evolução temporal dos votos 
