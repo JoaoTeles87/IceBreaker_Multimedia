@@ -3,9 +3,10 @@ from sqlmodel import Field, SQLModel, Relationship
 import datetime
 
 class Session(SQLModel, table=True):
+    __tablename__ = "session"
     id: Optional[int] = Field(default=None, primary_key=True)
     code: str = Field(unique=True, index=True)
-    # Adicionando relacionamentos para facilitar a navegação
+    started: bool = Field(default=False)
     questions: list["Question"] = Relationship(back_populates="session")
     votes: list["Vote"] = Relationship(back_populates="session")
 
@@ -34,3 +35,18 @@ class Vote(SQLModel, table=True):
     session: Session = Relationship(back_populates="votes")
     question: Question = Relationship(back_populates="votes")
     answer: Answer = Relationship(back_populates="votes")
+
+class Participant(SQLModel, table=True):
+    __tablename__ = "participants"
+    id: Optional[int] = Field(default=None, primary_key=True)
+    session_id: int = Field(foreign_key="session.id", index=True)
+    name: str
+    participant_uuid: str = Field(index=True)
+
+class ParticipantAnswer(SQLModel, table=True):
+    __tablename__ = "participant_answers"
+    id: Optional[int] = Field(default=None, primary_key=True)
+    participant_id: str
+    session_id: int = Field(foreign_key="session.id")
+    question_id: int = Field(foreign_key="question.id")
+    answer_text: str

@@ -39,6 +39,6 @@ def on_startup():
 app.include_router(questions.router, prefix="/questions", tags=["questions"])
 app.include_router(votes.router, tags=["votes"])
 app.include_router(results.router, prefix="/results", tags=["results"])
-app.include_router(sessions.router, prefix="/results", tags=["sessions"])
+app.include_router(sessions.router, prefix="/sessions", tags=["sessions"])
 
 app.mount("/", StaticFiles(directory=frontend_dist_path, html=True), name="frontend")
