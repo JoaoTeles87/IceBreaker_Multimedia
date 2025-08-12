@@ -7,7 +7,8 @@ from sqlalchemy import create_engine
 from sqlmodel import SQLModel
 from models.database import create_db_and_tables
 from models.models import Question, Answer, Session, Vote # Import models
-from routes import questions, votes # Import routes
+from routes import questions, votes, results, sessions # Import routes
+from database import create_db_and_tables
 
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -37,5 +38,7 @@ def on_startup():
 
 app.include_router(questions.router, prefix="/questions", tags=["questions"])
 app.include_router(votes.router, tags=["votes"])
+app.include_router(results.router, prefix="/results", tags=["results"])
+app.include_router(sessions.router, prefix="/results", tags=["sessions"])
 
 app.mount("/", StaticFiles(directory=frontend_dist_path, html=True), name="frontend")
