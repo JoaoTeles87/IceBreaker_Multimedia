@@ -1,0 +1,33 @@
+.ranking-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.ranking-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 15px;
+  border-bottom: 1px solid #ccc;
+}
+
+.ranking-item.first {
+  background: gold;
+}
+
+.ranking-item.second {
+  background: silver;
+}
+
+.ranking-item.third {
+  background: #cd7f32; /* bronze */
+}
+
+.link-btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #4cafef;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}

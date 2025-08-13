@@ -1,0 +1,39 @@
+.voting-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.option-btn {
+  padding: 10px;
+  border: 2px solid #444;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.option-btn:hover {
+  background: #eee;
+}
+
+.option-btn.selected {
+  background: #4cafef;
+  color: white;
+  border-color: #4cafef;
+}
+
+.vote-btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #4cafef;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
