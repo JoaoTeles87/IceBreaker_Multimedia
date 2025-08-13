@@ -1,23 +1,46 @@
+/* ===== VARIÁVEIS CSS ===== */
+:root {
+  --primary-color: #646cff;
+  --primary-color-alpha: #646cffaa;
+  --secondary-color: #61dafb;
+  --secondary-color-alpha: #61dafbaa;
+  --text-muted: #888;
+  --transition-speed: 300ms;
+  --container-max-width: 1280px;
+  --logo-height: 6em;
+  --logo-height-mobile: 4em;
+  --spacing-large: 2rem;
+  --spacing-medium: 1.5em;
+  --spacing-small: 1rem;
+  --border-radius: 8px;
+}
+
+/* ===== CONTAINER PRINCIPAL ===== */
 #root {
-  max-width: 1280px;
+  max-width: var(--container-max-width);
   margin: 0 auto;
-  padding: 2rem;
+  padding: var(--spacing-large);
   text-align: center;
 }
 
+/* ===== ESTILOS DE LOGO ===== */
 .logo {
-  height: 6em;
-  padding: 1.5em;
+  height: var(--logo-height);
+  padding: var(--spacing-medium);
   will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  transition: filter var(--transition-speed) ease;
+  cursor: pointer;
 }
 
+.logo:hover {
+  filter: drop-shadow(0 0 2em var(--primary-color-alpha));
+}
+
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em var(--secondary-color-alpha));
+}
+
+/* ===== ANIMAÇÕES ===== */
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
@@ -28,15 +51,34 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
+  .logo.spin {
     animation: logo-spin infinite 20s linear;
+    transform-origin: center;
   }
 }
 
+/* ===== COMPONENTES ===== */
 .card {
-  padding: 2em;
+  padding: var(--spacing-large);
+  margin: var(--spacing-small) 0;
+  border-radius: var(--border-radius);
+  background: rgba(255, 255, 255, 0.062);
 }
 
 .read-the-docs {
-  color: #888;
+  color: var(--text-muted);
+  font-size: 0.9em;
+  margin-top: var(--spacing-large);
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 768px) {
+  #root {
+    padding: var(--spacing-small);
+  }
+  
+  .logo {
+    height: var(--logo-height-mobile);
+    padding: var(--spacing-small);
+  }
 }
